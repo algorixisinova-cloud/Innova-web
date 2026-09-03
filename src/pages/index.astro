@@ -1,4 +1,7 @@
 ---
+// Forzamos prerenderizado para la home, evitando fallos de enrutamiento SSR en la raíz
+export const prerender = true;
+
 import Layout from '../layouts/Layout.astro';
 import JarvisCopilot from '../components/copilot/JarvisCopilot';
 import ModuleGrid from '../components/3D/ModuleGrid';
@@ -14,6 +17,5 @@ import ModuleGrid from '../components/3D/ModuleGrid';
   </header>
 
   <ModuleGrid client:visible />
-
   <JarvisCopilot client:only="react" />
 </Layout>
