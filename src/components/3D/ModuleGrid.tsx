@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Module3DCard from './Module3DCard';
 import LeadModal from './LeadModal';
+import ModuleDetail from './ModuleDetail';
 
 const modules = [
   { id: 1, title: "Agentes de IA & Automatización Cognitiva", desc: "Implementación de agentes autónomos con arquitectura MCP. Integración de LLMs para procesamiento de documentos, extracción de entidades y toma de decisiones semiautomáticas.", color: "#8b5cf6" },
@@ -13,6 +14,7 @@ const modules = [
 
 export default function ModuleGrid() {
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
+  const [openedModule, setOpenedModule] = useState<string | null>(null);
 
   return (
     <>
@@ -21,25 +23,14 @@ export default function ModuleGrid() {
           <h2 className="text-4xl md:text-5xl font-bold mb-4 gradient-title">Centro de Comando INNOVA</h2>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">Soluciones tecnológicas diseñadas para resultados medibles. Selecciona un módulo para explorar.</p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {modules.map((mod) => (
-            <Module3DCard 
-              key={mod.id}
-              title={mod.title}
-              description={mod.desc}
-              color={mod.color}
-              onExplore={() => setSelectedModule(mod.title)}
-            />
+            <Module3DCard key={mod.id} title={mod.title} description={mod.desc} color={mod.color} onExplore={() => setSelectedModule(mod.title)} />
           ))}
         </div>
       </section>
-
-      <LeadModal 
-        isOpen={!!selectedModule} 
-        onClose={() => setSelectedModule(null)} 
-        moduleName={selectedModule || ''} 
-      />
+      <LeadModal isOpen={!!selectedModule} onClose={() => setSelectedModule(null)} moduleName={selectedModule || ''} onSuccess={() => { setSelectedModule(null); setOpenedModule(selectedModule); }} />
+      {openedModule && <ModuleDetail moduleName={openedModule} onClose={() => setOpenedModule(null)} />}
     </>
   );
 }
