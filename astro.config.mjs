@@ -6,9 +6,12 @@ import netlify from '@astrojs/netlify';
 export default defineConfig({
   output: 'server',
   integrations: [react()],
-  adapter: netlify(), // <-- ADAPTADOR NETLIFY PARA ASTRO 7
+  adapter: netlify(),
   vite: {
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: ['three', '@react-three/fiber', '@react-three/drei']
+    },
     ssr: {
       noExternal: ['three', '@react-three/fiber', '@react-three/drei']
     }

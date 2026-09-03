@@ -1,33 +1,19 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ModuleGrid from '../components/modules/ModuleGrid.astro';
 import JarvisCopilot from '../components/copilot/JarvisCopilot';
+import ModuleGrid from '../components/3D/ModuleGrid';
 ---
 
 <Layout title="Algorixis Innova | Transformación Digital e IA">
-  
-  <!-- HERO -->
-  <main class="relative z-10 min-h-screen flex flex-col items-center justify-center px-6">
-    <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 mb-8 shadow-[0_0_40px_rgba(0,102,255,0.15)]">
-      <img src="/logo.svg" alt="Algorixis Innova" class="h-24 w-24 md:h-28 md:w-28" />
+  <header class="min-h-screen flex items-center justify-center text-center px-4">
+    <div>
+      <h1 class="text-5xl md:text-7xl font-bold mb-6 gradient-title">Algorixis Innova</h1>
+      <p class="text-xl text-gray-300 max-w-3xl mx-auto mb-8">Transformación Digital, Inteligencia Artificial y Automatización de Procesos para empresas que lideran el futuro.</p>
+      <a href="#modulos" class="px-8 py-4 bg-[#0066ff] hover:bg-[#00d4ff] text-white rounded-xl font-semibold transition-all shadow-lg shadow-blue-500/30">Explorar Soluciones</a>
     </div>
-    <h1 class="text-5xl md:text-7xl font-bold text-center mb-6 gradient-title">Algorixis Innova</h1>
-    <p class="text-xl md:text-2xl text-gray-300 text-center max-w-2xl mb-4 font-light tracking-wide">Transformación Digital e Inteligencia Artificial</p>
-    <p class="text-base text-gray-400 text-center max-w-xl leading-relaxed">Automatización de procesos, agentes de IA, desarrollo tecnológico y optimización empresarial para Argentina y Latinoamérica.</p>
-    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
-      <svg class="w-6 h-6 text-[#00d4ff]/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
-    </div>
-  </main>
+  </header>
 
-  <!-- MÓDULOS -->
-  <ModuleGrid />
+  <ModuleGrid client:visible />
 
-  <!-- FOOTER -->
-  <footer class="relative z-10 py-12 px-6 border-t border-white/5 text-center">
-    <p class="text-gray-500 text-sm">© 2026 Algorixis Innova. Todos los derechos reservados.</p>
-  </footer>
-
-  <!-- JARVIS - DIRECTIVA CLIENT:ONLY OBLIGATORIA -->
   <JarvisCopilot client:only="react" />
-
 </Layout>
