@@ -2,7 +2,6 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
-// Contexto corporativo para JARVIS
 const SYSTEM_PROMPT = `Eres JARVIS, el asistente virtual oficial de Algorixis Innova (INNOVA). 
 Tu rol es atender clientes potenciales y responder consultas sobre nuestros servicios tecnológicos.
 
@@ -30,21 +29,16 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     const { messages } = body;
     
-    const apiKey = import.meta.env.GROQ_API_KEY;
+    // FALLBACK ROBUSTO: Intenta import.meta.env, si falla usa process.env (estándar de Node/Netlify)
+    const apiKey = import.meta.env.GROQ_API_KEY || process.env.GROQ_API_KEY;
 
     if (!apiKey) {
-      console.error('GROQ_API_KEY no encontrada');
-      return new Response(JSON.stringify({ error: 'API key no configurada' }), { 
+      console.error('ERROR CRÍTICO: GROQ_API_KEY no está configurada en el entorno.');
+      return new Response(JSON.stringify({ error: 'API key no configurada en el servidor' }), { 
         status: 500,
         headers: { 'Content-Type': 'application/json' }
       });
     }
-
-    // Inyectar System Prompt al inicio de los mensajes
-    const enrichedMessages = [
-      { role: 'system', content: SYSTEM_PROMPT },
-      ...messages
-    ];
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
@@ -54,7 +48,7 @@ export const POST: APIRoute = async ({ request }) => {
       },
       body: JSON.stringify({
         model: 'qwen/qwen3.8-27b',
-        messages: enrichedMessages,
+        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
         temperature: 0.7,
         max_tokens: 500
       })
