@@ -1,17 +1,33 @@
 ---
-
+import Layout from '../layouts/Layout.astro';
+import ModuleGrid from '../components/modules/ModuleGrid.astro';
+import JarvisCopilot from '../components/copilot/JarvisCopilot';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Algorixis Innova | Transformación Digital e IA">
+  
+  <!-- HERO -->
+  <main class="relative z-10 min-h-screen flex flex-col items-center justify-center px-6">
+    <div class="backdrop-blur-md bg-white/5 border border-white/10 rounded-2xl p-6 mb-8 shadow-[0_0_40px_rgba(0,102,255,0.15)]">
+      <img src="/logo.svg" alt="Algorixis Innova" class="h-24 w-24 md:h-28 md:w-28" />
+    </div>
+    <h1 class="text-5xl md:text-7xl font-bold text-center mb-6 gradient-title">Algorixis Innova</h1>
+    <p class="text-xl md:text-2xl text-gray-300 text-center max-w-2xl mb-4 font-light tracking-wide">Transformación Digital e Inteligencia Artificial</p>
+    <p class="text-base text-gray-400 text-center max-w-xl leading-relaxed">Automatización de procesos, agentes de IA, desarrollo tecnológico y optimización empresarial para Argentina y Latinoamérica.</p>
+    <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <svg class="w-6 h-6 text-[#00d4ff]/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+    </div>
+  </main>
+
+  <!-- MÓDULOS -->
+  <ModuleGrid />
+
+  <!-- FOOTER -->
+  <footer class="relative z-10 py-12 px-6 border-t border-white/5 text-center">
+    <p class="text-gray-500 text-sm">© 2026 Algorixis Innova. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- JARVIS - DIRECTIVA CLIENT:ONLY OBLIGATORIA -->
+  <JarvisCopilot client:only="react" />
+
+</Layout>

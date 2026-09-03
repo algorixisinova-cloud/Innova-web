@@ -1,0 +1,78 @@
+---
+const modules = [
+  {
+    id: 1,
+    title: "Agentes de IA & Automatización Cognitiva",
+    desc: "Flujos autónomos con LLMs, MCP y procesamiento inteligente de datos.",
+    icon: "🧠",
+    from: "#8b5cf6",
+    to: "#3b82f6"
+  },
+  {
+    id: 2,
+    title: "Transformación Digital & RPA",
+    desc: "Integración de sistemas legacy + IA para eliminar cuellos de botella.",
+    icon: "⚙️",
+    from: "#3b82f6",
+    to: "#06b6d4"
+  },
+  {
+    id: 3,
+    title: "Lean Manufacturing & Calidad ISO 4.0",
+    desc: "Tableros Kanban 3D, métricas OEE en tiempo real y mejora continua digital.",
+    icon: "📊",
+    from: "#06b6d4",
+    to: "#14b8a6"
+  },
+  {
+    id: 4,
+    title: "Data Intelligence & BI Predictivo",
+    desc: "Dashboards interactivos, predicción con IA y análisis avanzado de KPIs.",
+    icon: "📈",
+    from: "#14b8a6",
+    to: "#10b981"
+  },
+  {
+    id: 5,
+    title: "Chatbots & Asistentes Conversacionales",
+    desc: "Atención, ventas y soporte 24/7 con voz y texto natural.",
+    icon: "💬",
+    from: "#10b981",
+    to: "#22c55e"
+  },
+  {
+    id: 6,
+    title: "Consultoría Estratégica & Scaling Tech",
+    desc: "Diagnóstico de madurez tecnológica, roadmaps digitales e implementación.",
+    icon: "🚀",
+    from: "#22c55e",
+    to: "#84cc16"
+  }
+];
+---
+
+<section id="modulos" class="relative z-10 py-24">
+  
+  <!-- Título de Sección -->
+  <div class="text-center mb-16 px-6">
+    <h2 class="text-4xl md:text-5xl font-bold mb-4 gradient-title">
+      Centro de Comando INNOVA
+    </h2>
+    <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+      Selecciona un módulo para explorar nuestras soluciones tecnológicas
+    </p>
+  </div>
+
+  <!-- Grilla de Módulos con CSS Nativo -->
+  <div class="module-grid">
+    {modules.map((module) => (
+      <div class="module-card" style={`--icon-from: ${module.from}; --icon-to: ${module.to}`}>
+        <div class="status-dot"></div>
+        <div class="module-icon">{module.icon}</div>
+        <h3 class="module-title">{module.title}</h3>
+        <p class="module-desc">{module.desc}</p>
+      </div>
+    ))}
+  </div>
+
+</section>
