@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface ModuleDetailProps {
   moduleName: string;
@@ -80,6 +80,12 @@ export default function ModuleDetail({ moduleName, onClose }: ModuleDetailProps)
 
   const data = moduleData[moduleName] || moduleData["Agentes de IA & Automatización Cognitiva"];
 
+  // Corregido: useEffect para el temporizador de la explosión
+  useEffect(() => {
+    const timer = setTimeout(() => setShowExplosion(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleConsult = async (e: React.FormEvent) => {
     e.preventDefault();
     setConsultStatus('sending');
@@ -99,8 +105,6 @@ export default function ModuleDetail({ moduleName, onClose }: ModuleDetailProps)
       setConsultStatus('idle');
     }
   };
-
-  setTimeout(() => setShowExplosion(false), 1500);
 
   return (
     <div className="fixed inset-0 z-[100] overflow-y-auto bg-black/95 backdrop-blur-xl">
@@ -136,7 +140,7 @@ export default function ModuleDetail({ moduleName, onClose }: ModuleDetailProps)
           <div className="grid md:grid-cols-3 gap-6">
             {data.cases.map((c, i) => (
               <div key={i} className="bg-gradient-to-br from-white/5 to-white/0 border border-white/10 rounded-2xl p-6 hover:border-[#00d4ff]/50 transition-all">
-                <div className="text-3xl mb-3">📊</div>
+                <div className="text-3xl mb-3"></div>
                 <p className="text-gray-300 leading-relaxed">{c}</p>
               </div>
             ))}
