@@ -1,12 +1,12 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
-import cloudflare from '@astrojs/cloudflare';
+import netlify from '@astrojs/netlify';
 
 export default defineConfig({
   output: 'server',
   integrations: [react()],
-  adapter: cloudflare(),
+  adapter: netlify(), // <-- ADAPTADOR NETLIFY PARA ASTRO 7
   vite: {
     plugins: [tailwindcss()],
     ssr: {
