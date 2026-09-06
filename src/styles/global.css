@@ -1,14 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  body {
-    @apply bg-black text-white antialiased;
-  }
-  .gradient-title {
-    @apply bg-gradient-to-r from-[#0066ff] to-[#00d4ff] bg-clip-text text-transparent;
-  }
+/* Estilos base nativos (más seguros en Tailwind v4) */
+body {
+  background-color: black;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+}
+
+.gradient-title {
+  background: linear-gradient(to right, #0066ff, #00d4ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* ===== EFECTO DE EXPLOSIÓN ===== */
