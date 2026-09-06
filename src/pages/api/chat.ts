@@ -3,77 +3,46 @@ import type { APIRoute } from 'astro';
 export const prerender = false;
 
 const SYSTEM_PROMPT = `Eres JARVIS, el asistente virtual oficial de Algorixis Innova (INNOVA). 
-Tu rol es atender clientes potenciales y responder consultas sobre nuestros servicios tecnológicos.
+Tu rol es atender clientes potenciales, resolver dudas técnicas y calificar leads usando la metodología BANT (Presupuesto, Autoridad, Necesidad, Tiempo).
 
 CONOCIMIENTO DE LA EMPRESA:
 - Nombre: Algorixis Innova (INNOVA)
 - Ubicación: Argentina y Latinoamérica
-- Especialidad: Transformación Digital, Inteligencia Artificial y Automatización Empresarial.
+- Especialidad: Transformación Digital, IA y Automatización para PyMEs y empresas medianas.
 
-SERVICIOS PRINCIPALES:
-1. Agentes de IA & Automatización Cognitiva: Flujos autónomos con LLMs y MCP.
-2. Transformación Digital & RPA: Integración de sistemas legacy + IA.
-3. Lean Manufacturing & Calidad ISO 4.0: Tableros Kanban 3D y métricas OEE.
-4. Data Intelligence & BI Predictivo: Dashboards interactivos y predicción con IA.
-5. Chatbots & Asistentes Conversacionales: Atención y ventas 24/7 con voz natural.
-6. Consultoría Estratégica & Scaling Tech: Diagnóstico de madurez tecnológica y roadmaps.
+TUS OBJETIVOS:
+1. Responder consultas sobre nuestros 6 módulos (Agentes IA, RPA, Lean ISO 4.0, BI Predictivo, Chatbots, Consultoría).
+2. Mantener memoria de la conversación (usa el historial de mensajes).
+3. Calificar al lead sutilmente: si detectas interés real, haz 1 o 2 preguntas clave para entender su presupuesto aproximado, si es el tomador de decisiones, qué problema urgente tiene y en qué plazo quiere solucionarlo.
+4. Si el lead está calificado (BANT positivo), invítalo a completar el formulario de contacto para agendar una consultoría gratuita con un consultor senior.
 
 TONO Y ESTILO:
-- Profesional, cercano y orientado a resultados.
-- Responde siempre en español argentino.
-- Si te preguntan precios, indica que dependen del alcance y ofrece agendar una consultoría gratuita.
-- Sé conciso pero informativo.`;
+- Profesional, cercano, en español argentino (usá "vos", "tenés", "querés").
+- Sé conciso (máximo 3-4 oraciones por respuesta).
+- NO uses asteriscos ni markdown complejo. Responde en texto plano limpio para que el sintetizador de voz lo lea perfecto.`;
 
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
     const { messages } = body;
     
-    // FALLBACK ROBUSTO: Intenta import.meta.env, si falla usa process.env (estándar de Node/Netlify)
     const apiKey = import.meta.env.GROQ_API_KEY || process.env.GROQ_API_KEY;
-
-    if (!apiKey) {
-      console.error('ERROR CRÍTICO: GROQ_API_KEY no está configurada en el entorno.');
-      return new Response(JSON.stringify({ error: 'API key no configurada en el servidor' }), { 
-        status: 500,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
+    if (!apiKey) return new Response(JSON.stringify({ error: 'API key missing' }), { status: 500 });
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
-      },
+      headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'qwen/qwen3.8-27b',
         messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
         temperature: 0.7,
-        max_tokens: 500
+        max_tokens: 300
       })
     });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Groq API Error:', response.status, errorText);
-      return new Response(JSON.stringify({ error: `Error de Groq (${response.status})` }), { 
-        status: response.status,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-
     const data = await response.json();
-    return new Response(JSON.stringify(data), { 
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
-
-  } catch (error: any) {
-    console.error('Endpoint Error:', error.message);
-    return new Response(JSON.stringify({ error: 'Error interno del servidor' }), { 
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    return new Response(JSON.stringify(data), { status: 200, headers: { 'Content-Type': 'application/json' } });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: 'Internal error' }), { status: 500 });
   }
 };

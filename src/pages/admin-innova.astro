@@ -1,0 +1,72 @@
+---
+export const prerender = false;
+---
+<html>
+<head>
+  <title>INNOVA | Dashboard de Leads</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-8">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold text-[#00d4ff]">Dashboard de Leads INNOVA</h1>
+      <button id="refreshBtn" class="px-4 py-2 bg-[#0066ff] rounded-lg hover:bg-[#00d4ff] transition">Actualizar</button>
+    </div>
+    
+    <div id="loginScreen" class="max-w-md mx-auto mt-20">
+      <h2 class="text-xl mb-4">Acceso Restringido</h2>
+      <input type="password" id="password" placeholder="Contraseña de administrador" class="w-full p-3 bg-gray-800 rounded mb-4 text-white" />
+      <button id="loginBtn" class="w-full py-3 bg-[#0066ff] rounded font-bold">Ingresar</button>
+    </div>
+
+    <div id="dashboard" class="hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="border-b border-gray-700 text-gray-400">
+              <th class="p-4">Fecha</th>
+              <th class="p-4">Nombre</th>
+              <th class="p-4">Email</th>
+              <th class="p-4">Empresa</th>
+              <th class="p-4">Módulo</th>
+              <th class="p-4">Tipo</th>
+            </tr>
+          </thead>
+          <tbody id="leadsTable" class="text-gray-300"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let token = '';
+    const loginBtn = document.getElementById('loginBtn');
+    const refreshBtn = document.getElementById('refreshBtn');
+    
+    const fetchLeads = async () => {
+      const res = await fetch('/api/admin/leads', { headers: { 'Authorization': 'Bearer ' + token } });
+      if (res.ok) {
+        const { data } = await res.json();
+        const tbody = document.getElementById('leadsTable');
+        tbody.innerHTML = data.map(l => `
+          <tr class="border-b border-gray-800 hover:bg-gray-800/50">
+            <td class="p-4 text-sm">${new Date(l.created_at).toLocaleDateString('es-AR')}</td>
+            <td class="p-4 font-medium text-white">${l.name}</td>
+            <td class="p-4 text-[#00d4ff]">${l.email}</td>
+            <td class="p-4">${l.company || '-'}</td>
+            <td class="p-4 text-xs">${l.module}</td>
+            <td class="p-4"><span class="px-2 py-1 bg-blue-900/50 rounded text-xs">${l.type}</span></td>
+          </tr>
+        `).join('');
+        document.getElementById('loginScreen').classList.add('hidden');
+        document.getElementById('dashboard').classList.remove('hidden');
+      } else {
+        alert('Contraseña incorrecta');
+      }
+    };
+
+    loginBtn.onclick = () => { token = document.getElementById('password').value; fetchLeads(); };
+    refreshBtn.onclick = fetchLeads;
+  </script>
+</body>
+</html>
