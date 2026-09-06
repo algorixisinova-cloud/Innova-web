@@ -45,9 +45,10 @@ function AnimatedSphere({ color }: { color: string }) {
 
 export default function Module3DCard({ color, onExplore, title, description }: Module3DCardProps) {
   return (
-    <div className="relative w-full h-[450px] rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-b from-gray-900 to-black group">
+    <div className="relative w-full h-[450px] rounded-2xl overflow-hidden border border-white/10 bg-gradient-to-b from-gray-900 to-black group transition-all duration-300 hover:border-[#00d4ff]/50 hover:shadow-2xl hover:shadow-blue-500/10">
+      {/* Escena 3D de fondo */}
       <div className="absolute inset-0 z-0">
-        <Canvas camera={{ position: [0, 0, 3], fov: 45 }}>
+        <Canvas camera={{ position: [0, 0, 3.5], fov: 45 }} dpr={[1, 2]}>
           <ambientLight intensity={0.5} />
           <pointLight position={[10, 10, 10]} intensity={1.5} color={color} />
           <pointLight position={[-10, -10, -10]} intensity={0.5} color="#ffffff" />
@@ -56,6 +57,7 @@ export default function Module3DCard({ color, onExplore, title, description }: M
         </Canvas>
       </div>
 
+      {/* Overlay de Información (siempre encima del 3D) */}
       <div className="absolute inset-0 z-10 flex flex-col justify-end p-6 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none">
         <h3 className="text-xl font-bold text-white mb-2 drop-shadow-lg">{title}</h3>
         <p className="text-sm text-gray-300 leading-relaxed mb-4 line-clamp-3 drop-shadow-md">{description}</p>
